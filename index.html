@@ -1,165 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Steam Manifest Hub</title>
-<link rel="icon" type="image/png" href="/favicon.png">
+<title>Steam Hub - Générateur & Tutos</title>
+<link rel="icon" href="/favicon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
 
+/* Body & calm gradient background */
 body {
-  margin:0; padding:0;
   font-family:'Roboto',sans-serif;
-  background:#0a0a0f;
+  margin:0;
+  min-height:100vh;
   color:#e2e8f0;
   overflow-x:hidden;
-  position:relative;
+  background: linear-gradient(120deg, #0f172a, #1e293b, #111827);
+  background-size: 400% 400%;
+  animation: calmGradient 30s ease infinite;
+}
+@keyframes calmGradient {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
-/* Particles canvas */
-#bgCanvas {
-  position:fixed; top:0; left:0;
-  width:100%; height:100%;
-  z-index:-1;
-}
+/* Particles */
+#bgCanvas {position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1;}
 
-/* Logo neon */
-#logo {
-  font-family:'Orbitron',sans-serif;
-  font-weight:700;
-  font-size:3rem;
-  color:#0ff;
-  text-shadow:0 0 6px #0ff,0 0 12px #0ff;
-  transition: color 0.3s, text-shadow 0.3s;
-  margin-bottom:0.3rem;
-}
-
-/* Header text */
-header p {
-  color:#aaa;
-}
-
-/* Card styles */
-.card {
-  background: rgba(20,20,30,0.6);
-  border:1px solid rgba(0,255,255,0.2);
-  border-radius:1rem;
-  padding:2rem;
-  margin-bottom:2rem;
-  backdrop-filter:blur(10px);
+/* Fonts & subtle neon */
+.orbitron{font-family:'Orbitron',sans-serif;}
+.neon-title{
+  font-size:3.5rem;
   text-align:center;
-  box-shadow:0 0 10px rgba(0,255,255,0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
+  color:#fff;
+  text-shadow:0 0 5px #3b82f6,0 0 10px #6366f1,0 0 20px #8b5cf6;
+  animation:flicker 3s infinite;
 }
-.card:hover {
-  transform: scale(1.03) rotateY(2deg);
-  box-shadow:0 0 20px #0ff;
+@keyframes flicker{
+0%,19%,21%,23%,25%,54%,56%,100%{opacity:1}
+20%,22%,24%,55%{opacity:0.7}
 }
 
-/* Input */
-.input-neon {
-  background: rgba(10,10,20,0.5);
-  border: 1px solid #0ff;
-  padding:0.5rem 1rem;
-  border-radius:0.6rem;
-  color:#0ff;
-  width:100%;
-  max-width:300px;
-  margin:0 auto 1rem;
-  outline:none;
-  backdrop-filter:blur(4px);
+/* Buttons & input with shadow */
+.neon-button{
+  position:relative;
+  padding:0.7rem 2rem;
+  border-radius:0.75rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition: all 0.3s;
+  color:#fff;
+  margin-top:5px;
+  box-shadow:0 0 15px rgba(59,130,246,0.5);
 }
-.input-neon:focus { box-shadow:0 0 12px #0ff; border-color:#0ff; }
+.neon-button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(59,130,246,0.8);
+}
+.input-neon{
+  border-radius:0.5rem;
+  border:1px solid rgba(59,130,246,0.3);
+  background-color:rgba(20,28,42,0.8);
+  color:#fff;
+  padding:0.75rem 1rem;
+  width:100%;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(59,130,246,0.2);
+}
+.input-neon:focus{
+  outline:none;
+  box-shadow:0 0 15px #3b82f6,0 0 25px #6366f1;
+  border-color:#3b82f6;
+}
+
+/* Cards with soft shadow */
+.card{
+  backdrop-filter:blur(14px);
+  background-color:rgba(15,23,42,0.85);
+  border-radius:1rem;
+  border:1px solid rgba(59,130,246,0.3);
+  padding:2rem;
+  box-shadow:0 8px 25px rgba(0,0,0,0.4);
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 12px 40px rgba(59,130,246,0.5);
+}
 
 /* Terminal */
-.terminal {
-  background: rgba(0,0,0,0.6);
-  border:1px solid #0ff;
-  border-radius:0.6rem;
+.terminal{
+  font-family:'Courier New',monospace;
+  background-color:rgba(15,23,42,0.9);
+  border-left:3px solid #3b82f6;
   padding:1rem;
-  margin-top:1rem;
-  font-family: 'Courier New', monospace;
-  color: #0ff;
-  white-space: pre-wrap;
-  backdrop-filter:blur(4px);
+  border-radius:0.5rem;
+  overflow-x:auto;
   max-height:300px;
-  overflow-y:auto;
+  min-height:80px;
+  white-space:pre-line;
+  box-shadow:0 0 15px rgba(59,130,246,0.3);
 }
-
-/* Buttons */
-.neon-button {
-  background: rgba(0,255,255,0.2);
-  backdrop-filter:blur(6px);
-  color:#0ff;
-  padding:0.6rem 1.2rem;
-  border-radius:0.8rem;
-  font-weight:bold;
-  border:1px solid #0ff;
-  cursor:pointer;
-  box-shadow:0 0 6px #0ff,0 0 15px #0ff;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.neon-button:hover {
-  transform: scale(1.05);
-  box-shadow:0 0 20px #0ff,0 0 35px #0ff;
-}
-
-/* Navbar */
-.navbar { display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; }
-.nav-link {
-  color:#0ff; font-weight:500; text-decoration:none; position:relative;
-}
-.nav-link::after {
-  content:''; display:block; width:0; height:2px; background:#0ff;
-  position:absolute; bottom:-5px; left:0; transition:width .3s;
-}
-.nav-link:hover::after { width:100%; }
 
 /* Modal */
-.modal-bg {
-  position: fixed; top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.85);
-  display:flex; justify-content:center; align-items:center;
-  z-index:50;
-}
-.modal-card {
-  background: rgba(20,20,30,0.8);
-  border:1px solid #0ff;
-  border-radius:1rem;
-  padding:2rem;
-  text-align:center;
-  backdrop-filter: blur(8px);
-}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center;z-index:1000;}
+.modal-card{background:linear-gradient(135deg,#1e293b,#111827);border-radius:1rem;padding:2rem;text-align:center;box-shadow:0 0 50px #3b82f6;max-width:500px;width:90%;animation:modalFade .5s ease-out;}
+@keyframes modalFade{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 
-/* Pulse Animation */
-.pulse-animation { animation: pulse 2s infinite; }
-@keyframes pulse {
-  0% { transform: scale(1); opacity:1; }
-  50% { transform: scale(1.05); opacity:0.8; }
-  100% { transform: scale(1); opacity:1; }
-}
+/* Navigation */
+.navbar{display:flex;justify-center;gap:2rem; margin-bottom:2rem;}
+.nav-link{font-family:'Orbitron';text-decoration:none;color:#fff;font-weight:bold;transition:0.3s;font-size:1.1rem;}
+.nav-link:hover{color:#8b5cf6;text-shadow:0 0 10px #3b82f6,0 0 15px #6366f1;}
 </style>
 </head>
-<body>
+<body class="flex flex-col items-center p-6 space-y-12">
+
 <canvas id="bgCanvas"></canvas>
 
-<!-- Modal -->
-<div id="modal" class="modal-bg">
+<!-- Modal Disclaimer -->
+<div id="modal" class="modal-bg hidden">
   <div class="modal-card">
     <i class="fas fa-exclamation-circle text-yellow-400 text-5xl mb-4"></i>
     <h2 class="orbitron text-3xl mb-4 text-white">ATTENTION</h2>
     <p class="text-slate-300 mb-6">Ce site est uniquement informatif. L'utilisation des manifests est sous votre responsabilité.</p>
-    <button id="acceptModal" class="orbitron neon-button">J'AI COMPRIS</button>
+    <button id="acceptModal" class="orbitron neon-button bg-gradient-to-r from-blue-600 to-purple-600">J'AI COMPRIS</button>
   </div>
 </div>
 
-<header class="text-center mb-8">
-  <h1 id="logo">STEAM HUB</h1>
-  <p>Générateur de Manifest</p>
+<header class="text-center space-y-4">
+  <h1 class="orbitron neon-title">STEAM HUB</h1>
+  <p class="text-slate-300 text-lg">Générateur de manifests et exploration d'AppID Steam, relax et immersif.</p>
 </header>
 
 <nav class="navbar">
@@ -167,92 +140,135 @@ header p {
   <a href="#tuto" class="nav-link" onclick="showPage('tuto')">Tutos</a>
 </nav>
 
-<div id="main" class="w-full max-w-5xl mx-auto">
-  <div class="card">
-    <h2 class="orbitron text-2xl mb-4">Générateur de Manifest</h2>
-    <input type="text" id="appId" placeholder="Ex: 1154030" class="input-neon">
-    <button id="checkBtn" class="neon-button pulse-animation">VÉRIFIER</button>
-    <div class="terminal" id="terminalOutput"></div>
-  </div>
+<div id="main" class="w-full max-w-5xl mx-auto space-y-8">
+  <section class="card space-y-4">
+    <h2 class="orbitron text-2xl text-center">Générateur de Manifest</h2>
+    <div class="flex flex-col md:flex-row gap-6 items-end">
+      <input type="text" id="appId" placeholder="Ex: 1154030" class="input-neon flex-1">
+      <button id="checkBtn" class="orbitron neon-button bg-gradient-to-r from-blue-600 to-purple-600">VÉRIFIER</button>
+    </div>
+    <div id="results" class="hidden space-y-4">
+      <div class="terminal" id="terminalOutput"></div>
+      <div id="downloadSection" class="hidden text-center">
+        <a id="downloadLink" class="neon-button bg-gradient-to-r from-green-600 to-emerald-600 mt-2 inline-block">
+          <i class="fas fa-download mr-2"></i>TÉLÉCHARGER
+        </a>
+      </div>
+      <div id="notFound" class="hidden text-center bg-red-900/30 border border-red-700/50 rounded-lg py-4">
+        <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+        <span class="orbitron text-red-300">MANIFEST INEXISTANT</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card space-y-6">
+    <h2 class="orbitron text-2xl text-center">À propos</h2>
+    <p class="text-slate-300 text-center">Steam Hub vous permet d’explorer les AppID Steam, générer des manifests et découvrir des outils comme SteamTools et Cream Installer.</p>
+    <div class="flex flex-col md:flex-row gap-6 justify-center">
+      <div class="card flex-1 text-center hover:scale-105">
+        <i class="fas fa-tools text-blue-400 text-3xl mb-2"></i>
+        <h3 class="orbitron font-bold">SteamTools</h3>
+        <p class="text-slate-300 text-sm">Téléchargez SteamTools pour gérer vos manifests facilement.</p>
+      </div>
+      <div class="card flex-1 text-center hover:scale-105">
+        <i class="fas fa-download text-purple-400 text-3xl mb-2"></i>
+        <h3 class="orbitron font-bold">Cream Installer</h3>
+        <p class="text-slate-300 text-sm">Installer Cream Installer pour simplifier vos installations.</p>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div id="tuto" class="w-full max-w-5xl mx-auto hidden">
-  <div class="card">
+<div id="tuto" class="w-full max-w-5xl mx-auto space-y-8 hidden">
+  <section class="card text-center">
     <h2 class="orbitron text-2xl mb-4">Installer SteamTools</h2>
     <p class="text-slate-300 mb-4">Téléchargez SteamTools : <a href="https://www.steamtools.net" target="_blank" class="text-purple-400 hover:text-purple-300">steamtools.net</a></p>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/hiqiYMgEc_I" frameborder="0" allowfullscreen class="rounded-lg"></iframe>
-  </div>
-  <div class="card">
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/hiqiYMgEc_I" title="Tuto SteamTools" frameborder="0" allowfullscreen class="rounded-lg"></iframe>
+  </section>
+
+  <section class="card text-center">
     <h2 class="orbitron text-2xl mb-4">Installer Cream Installer</h2>
     <p class="text-slate-300 mb-4">Téléchargez Cream Installer : <a href="https://drive.google.com/file/d/1OSOAImJH08nTJcr29NjqXofeX5FqxYTc/view" target="_blank" class="text-purple-400 hover:text-purple-300">Google Drive</a></p>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/8Wve5zvPcv8" frameborder="0" allowfullscreen class="rounded-lg"></iframe>
-  </div>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/8Wve5zvPcv8" title="Tuto Cream Installer" frameborder="0" allowfullscreen class="rounded-lg"></iframe>
+  </section>
 </div>
 
-<footer class="text-center mt-12 text-slate-400 text-sm">
-  <p>© 2025 Steam Hub | Non affilié à Valve ou Steam</p>
+<footer class="text-center mt-12">
+<p>© 2025 Steam Hub | Tous droits réservés par <span>Steam Solution</span></p>
+<p>Non affilié à Valve, Steam ou à tout autre produit Valve.</p>
 </footer>
 
 <script>
-// Modal
-document.getElementById('acceptModal').addEventListener('click', ()=>{
-  document.getElementById('modal').style.display='none';
-});
-
-// Show page
-function showPage(page){
+// Navigation
+function showPage(page) {
   document.getElementById('main').classList.add('hidden');
   document.getElementById('tuto').classList.add('hidden');
   document.getElementById(page).classList.remove('hidden');
 }
 
-// Steam fetch simulation
-const checkBtn = document.getElementById('checkBtn');
-const appIdInput = document.getElementById('appId');
-const terminalOutput = document.getElementById('terminalOutput');
-
-checkBtn.addEventListener('click', checkGame);
-appIdInput.addEventListener('keypress', e=>{ if(e.key==='Enter') checkGame(); });
-
-function checkGame(){
-  const appId = appIdInput.value.trim();
-  if(!appId || !/^\d+$/.test(appId)){
-    terminalOutput.textContent="> ERROR: Veuillez entrer un AppID valide";
-    return;
-  }
-  terminalOutput.textContent=`> Recherche du manifest pour AppID: ${appId}\n> Manifest trouvé !\n> Prêt au téléchargement.`;
-}
-
-// Particles Background
+// Calm particle background
 const canvas=document.getElementById('bgCanvas');
 const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-let particles=[];
-for(let i=0;i<150;i++){
-  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,dx:(Math.random()-0.5)*0.4,dy:(Math.random()-0.5)*0.4});
-}
+let w,h;
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+window.addEventListener('resize',resize); resize();
+
+const particles=[];
+for(let i=0;i<120;i++) particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.8,dx:(Math.random()-0.5)*0.7,dy:(Math.random()-0.5)*0.7,color:`hsla(${Math.random()*360},50%,70%,0.7)`});
+
 function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,w,h);
   particles.forEach(p=>{
     ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
-    ctx.fillStyle=`rgba(0,255,255,0.2)`;
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.color;
     ctx.fill();
     p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width)p.dx*=-1;
-    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    if(p.x<0||p.x>w) p.dx*=-1;
+    if(p.y<0||p.y>h) p.dy*=-1;
   });
-  // Logo clignotement
-  const logo=document.getElementById('logo');
-  if(Math.random()<0.03){
-    logo.style.color=(Math.random()<0.5)?'#0ff':'#9ff';
-    logo.style.textShadow=(Math.random()<0.5)?'0 0 6px #0ff,0 0 12px #0ff':'0 0 4px #9ff,0 0 10px #9ff';
-  }
   requestAnimationFrame(animate);
 }
 animate();
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+
+// Modal & disclaimer
+document.addEventListener('DOMContentLoaded',()=>{
+const modal=document.getElementById('modal');
+const acceptModal=document.getElementById('acceptModal');
+const checkBtn=document.getElementById('checkBtn');
+const appIdInput=document.getElementById('appId');
+const results=document.getElementById('results');
+const terminal=document.getElementById('terminalOutput');
+const downloadSection=document.getElementById('downloadSection');
+const downloadLink=document.getElementById('downloadLink');
+
+if(!localStorage.getItem('disclaimerAccepted')) modal.classList.remove('hidden');
+acceptModal.onclick=()=>{localStorage.setItem('disclaimerAccepted','true'); modal.classList.add('hidden');}
+
+function typeLines(lines,index=0){
+  if(index>=lines.length){downloadSection.classList.remove('hidden'); return;}
+  let line=lines[index]; let i=0;
+  const interval=setInterval(()=>{
+    if(i<line.length){terminal.textContent+=line.charAt(i);i++;}
+    else{clearInterval(interval);terminal.textContent+='\n';typeLines(lines,index+1);}
+  },20);
+}
+
+function showError(msg){terminal.textContent='> ERREUR : '+msg+'\n';downloadSection.classList.add('hidden');results.classList.remove('hidden');}
+
+function checkManifest(){
+  const id=appIdInput.value.trim();
+  if(!id||!/^\d+$/.test(id)) return showError('AppID invalide');
+  checkBtn.disabled=true; terminal.textContent=''; results.classList.remove('hidden'); downloadSection.classList.add('hidden');
+  const lines=[`> Vérification du manifest pour AppID: ${id}`,'> Manifest trouvé !','> Lien prêt pour téléchargement...'];
+  downloadLink.href='https://codeload.github.com/SteamAutoCracks/ManifestHub/zip/refs/heads/'+id;
+  typeLines(lines);
+  setTimeout(()=>{checkBtn.disabled=false;},lines.join('').length*20+500);
+}
+
+checkBtn.addEventListener('click',checkManifest);
+appIdInput.addEventListener('keypress',e=>{if(e.key==='Enter')checkManifest();});
+});
 </script>
 </body>
 </html>
